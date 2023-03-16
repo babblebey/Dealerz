@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { Product } from "../../types";
 
-type SliceState = { state: 'loading' } | { state?: 'finished', items: any[] }
+type SliceState = { state: 'loading' } | { state?: 'finished', items: Product[] }
 
 const initialState: SliceState = {
     items: []
@@ -26,21 +27,19 @@ export const cartSlice = createSlice({
             }
 
             // Set the Array to state
-            state.items = newCart
+            state.items = newCart;
         }
     }
 })
 
 // Cart Item Getter
-export const cartItems = (state: { cart: { items: any[] } }) => {
-    state.cart.items
+export const cartItems = (state: { cart: { items: Product[] } }) => {
+    return state.cart.items
 }
 
 // Cart Items Count
-export const cartItemsCount = (state: { cart: { items: any[] } }) => {
-    state.cart.items.reduce((total: any, item: { price: number }) => {
-        total + item.price
-    }, 0)
+export const cartItemsCount = (state: { cart: { items: Product[] } }) => {
+    return state.cart.items.length
 }
 
 export const { addToCart, removeFromCart } = cartSlice.actions;

@@ -10,12 +10,12 @@ export const fakeStoreApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl }),
     endpoints: builder => ({
         // Retrieve List of all Products
-        getProducts: builder.query<Product[], string>({
+        getProducts: builder.query<Product[], undefined>({
             query: () => createRequest(`/products`)
         }),
 
         // Get a Single Product details
-        getProductDetails: builder.query<Product, number>({
+        getProductDetails: builder.query<Product, string>({
             query: (id) => createRequest(`/products/${id}`)
         }),
 
