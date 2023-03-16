@@ -1,13 +1,20 @@
 import { FC } from "react";
 import ReactStarsRating from "react-awesome-stars-rating";
+import Currency from "react-currency-formatter";
+import { Product } from "../../types";
+import { Link } from "react-router-dom"
 
 interface ProductCardProps {
-    
+    data: Product;
 }
  
-const ProductCard: FC<ProductCardProps> = () => {
+const ProductCard: FC<ProductCardProps> = ({ data }) => {
+    const { id, title, image, category, price, rating } = data;
+
     return ( 
-        <div className="relative h-[375px] flex align-bottom justify-center p-2 bg-white rounded">
+        <div className="relative h-[375px] flex align-bottom bg-contain bg-center bg-no-repeat bg-white hover:bg-cover justify-center rounded"
+            style={{ backgroundImage: `url(${ image })` }}
+        >
             {/* Wishlist Button */}
             <button className="absolute top-0 right-0 m-2 bg-[#FFDDD3] p-2 rounded-md">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,15 +23,15 @@ const ProductCard: FC<ProductCardProps> = () => {
             </button>
 
             {/* Details */}
-            <div className="mt-auto flex flex-col items-center space-y-1">
+            <div className="mt-auto w-full flex flex-col items-center space-y-1 p-4 bg-white">
                 {/* Title */}
-                <p className="font-bold text-dblue-dark text-2xl">
-                    Urbano Jacket
-                </p>
+                <Link to={`/product/${id}`} className="font-bold text-dblue-dark text-2xl line-clamp-2 text-center hover:text-dorange-light">
+                    { title }
+                </Link>
 
                 {/* Rating */}
                 <ReactStarsRating 
-                    value={Number(Math.round(Math.random() * 5))}
+                    value={Number( rating.rate )}
                     className="flex mr-2 space-x-1"
                     size={16}
                     isEdit={false}
@@ -34,12 +41,12 @@ const ProductCard: FC<ProductCardProps> = () => {
 
                 {/* Category */}
                 <p className="text-dgrey-dark">
-                    category
+                    { category }
                 </p>
 
                 {/* Price */}
                 <span className="block font-medium text-dorange-light md:text-xl">
-                    $99
+                    <Currency quantity={ price } currency="USD" />
                 </span>
             </div>
         </div>

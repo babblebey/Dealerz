@@ -2,12 +2,22 @@ import { FC } from "react";
 import Hero from "../components/Hero";
 import Newsletter from "../components/Newsletter";
 import ProductCard from "../components/ProductCard";
+import { useGetCategoriesQuery, useGetProductsQuery } from "../app/services/FakeStoreAPI";
+import Loading from "../components/Loading";
 
 interface ShopProps {
     
 }
  
 const Shop: FC<ShopProps> = () => {
+    const { data: products, error, isLoading, isFetching } = useGetProductsQuery();
+    const { data: categories } = useGetCategoriesQuery();
+
+    // While Data is Fetching or Loading
+    if ( isLoading || isFetching ) return <Loading />;
+
+    // console.log(data);
+
     return ( 
         <>
             <Hero 
@@ -46,10 +56,10 @@ const Shop: FC<ShopProps> = () => {
                                 Product Categories
                             </p>
                             <div className="space-y-6">
-                                { [1,1,1,1,1].map((_, i) => (
+                                { categories?.map((cat, i) => (
                                     <div key={i} className="flex items-center justify-between">
-                                        <span>
-                                            Category Name
+                                        <span className="capitalize">
+                                            { cat }
                                         </span>
                                         <span>
                                             <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,10 +78,11 @@ const Shop: FC<ShopProps> = () => {
                     {/* Products */}
                     <div className="col-span-2 space-y-10">
                         <div className="md:grid md:grid-cols-2 md:gap-6">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
+                            { !isLoading && 
+                                products?.map((item, i) => (
+                                    <ProductCard key={i} data={ item } />
+                                )
+                            ) }
                         </div>
                         <div className="flex justify-center">
                             <button className="h-14 px-6 flex items-center font-bold rounded-lg bg-dorange-light text-white">

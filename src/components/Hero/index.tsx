@@ -27,7 +27,7 @@ const Hero: FC<HeroProps> = ({ title, description, ctaButton }) => {
 
                     {/* Call-to-action Button - If Found */}
                     { ctaButton && (
-                        <a href={ ctaButton.url || '#' }>
+                        <a href={ ctaButton.url || '#' } className="block">
                             <button className="py-5 px-6 rounded-lg bg-dorange-light text-white">
                                 { ctaButton.label }
                             </button>

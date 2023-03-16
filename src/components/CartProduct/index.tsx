@@ -1,21 +1,33 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import Currency from "react-currency-formatter";
+import { Product } from "../../types";
+import { useDispatch } from "react-redux";
+import { removeFromCart } from "../../app/slices/cart";
+import { Link } from "react-router-dom";
 
 interface CartProductProps {
-    
+    data: Product
 }
  
-const CartProduct: FC<CartProductProps> = ({}) => {
+const CartProduct: FC<CartProductProps> = ({ data }) => {
+    const [qty, setQty] = useState<number>(1);
+    const dispatch = useDispatch();
+    const { id, title, image, category, price, rating } = data;
+
+    // Remove Item from Shopping Cart
+    const removeItemFromCart = () => dispatch(removeFromCart({ id }))
+
     return (
         <div className="flex w-full items-center space-x-10">
             {/* Image */}
-            <div className="flex-none bg-dgrey-medium h-52 w-52 rounded" />
+            <img src={ image } alt={ title } className="flex-none h-52 w-52 rounded object-contain bg-white p-2" />
 
             {/* Details */}
             <div className="grow space-y-6">
                 {/* Name */}
-                <p className="font-bold text-dblue-dark text-3xl">
-                    Tropical Playsuit
-                </p>
+                <Link to={`/product/${id}`} className="font-bold text-dblue-dark text-3xl line-clamp-2 hover:text-dorange-light">
+                    { title }
+                </Link>
 
                 {/* Quantity */}
                 <div className="flex items-center justify-between">
@@ -23,16 +35,28 @@ const CartProduct: FC<CartProductProps> = ({}) => {
                         Quantity :
                     </p>
                     <div className="bg-white h-10 flex-none border flex rounded">
-                        <button className="flex-none w-8 h-full text-lg">
+                        {/* Decrement Quantity */}
+                        <button className="flex-none w-8 h-full text-lg"
+                            // Deduct 1 from quantity onClick only if quantity is greater than 1
+                            onClick={() => (qty > 1) && setQty(prevState => prevState - 1)}
+                        >
                             -
                         </button>
+
+                        {/* Field */}
                         <input 
                             className="flex-1 h-full w-12 text-center focus-visible:outline-none"
                             type="number" 
-                            name="" 
-                            id="" 
+                            name=""
+                            min={1}
+                            value={ qty }
                         />
-                        <button className="flex-none w-8 h-full text-lg">
+
+                        {/* Increment Quantity */}
+                        <button className="flex-none w-8 h-full text-lg"
+                            // Add 1 to quantity onClick 
+                            onClick={() => setQty(prevState => prevState + 1)}
+                        >
                             +
                         </button>
                     </div>
@@ -41,14 +65,16 @@ const CartProduct: FC<CartProductProps> = ({}) => {
                 {/* Cost & Buttons */}
                 <div className="flex items-center justify-between">
                     {/* Cost */}
-                    <span className="block font-bold text-dorange-light md:text-5xl">
-                        $99
+                    <span className="block font-bold text-dorange-light md:text-3xl">
+                        <Currency quantity={ price } currency="USD" />
                     </span>
 
                     {/* Buttons */}
                     <div className="flex space-x-6">
                         {/* Delete */}
-                        <button className="h-10 w-10 flex items-center justify-center rounded-lg border-2 border-dorange-light text-dorange-light">
+                        <button className="h-10 w-10 flex items-center justify-center rounded-lg border-2 border-dorange-light text-dorange-light"
+                            onClick={ removeItemFromCart }
+                        >
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M21 5H16V2H8V5H3V7H4.069L5.069 21H18.931L19.931 7H21V5ZM10 4H14V5H10V4ZM17.069 19H6.931L6.074 7H17.926L17.069 19Z" fill="#F86338"/>
                                 <path d="M11 9H9V17H11V9Z" fill="#F86338"/>

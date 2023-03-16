@@ -1,32 +1,49 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import ReactStarsRating from "react-awesome-stars-rating";
+import Currency from "react-currency-formatter";
+import { useParams } from "react-router-dom";
+import { useGetProductDetailsQuery } from "../app/services/FakeStoreAPI";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../app/slices/cart";
+import { Product } from "../types";
 import TopItems from "../components/TopItems";
-
-interface ProductDetailsProps {
-    
-}
+import Loading from "../components/Loading";
  
-const ProductDetails: FC<ProductDetailsProps> = () => {
-    return ( 
+const ProductDetails: FC = () => {
+    const [qty, setQty] = useState<number>(1);
+    const { productId } = useParams();
+    const dispatch = useDispatch();
+
+    const { data, error, isLoading, isFetching } = useGetProductDetailsQuery(productId);
+    
+    // While Data is Fetchinf or Loading
+    if ( isLoading || isFetching ) return <Loading />;
+    
+    const { id, title, image, description, category, price, rating } = data as Product;
+    console.log(data);
+
+    // Add Item to Shopping Cart
+    const addItemToCart = () => dispatch(addToCart( data ));
+
+    return (
         <>
             {/* Product Information */}
-            <div className="container py-8 md:py-28">
+            <div className="container py-8 md:py-28 md:grid md:grid-cols-2 gap-x-10">
                 {/* Image */}
-                <div className="w-full md:w-6/12">
-                    <div />
-                    
+                <div className="w-full h-[552px] bg-white rounded p-4">
+                    <img src={ image } alt={ title } className="w-full h-full object-contain" />
                 </div>
 
                 {/* Information */}
-                <div className="w-full md:w-6/12 space-y-8">
+                <div className="w-full space-y-8">
                     {/* Title */}
                     <h3 className="font-bold text-5xl text-ddark-dark">
-                        Urbano Jacket
+                        { title }
                     </h3>
 
                     {/* Rating */}
                     <ReactStarsRating 
-                        value={Number(Math.round(Math.random() * 5))}
+                        value={Number( rating.rate )}
                         className="flex mr-2 space-x-1"
                         size={20}
                         isEdit={false}
@@ -36,7 +53,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
 
                     {/* Price */}
                     <span className="block font-bold text-dorange-light md:text-5xl">
-                        $99
+                        <Currency quantity={ price } currency="USD" />
                     </span>
 
                     {/* Summary */}
@@ -45,10 +62,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                             Details
                         </h5>
                         <p>
-                            Develop a website by finding a product identity that has value and branding to become a characteristic of a company. We will also facilitate the business marketing of these products with our SEO experts so that they become a ready-to-use website and help sell a product from the company.
-                        </p>
-                        <p>
-                            Develop a website by finding a product identity that has value and branding to become a characteristic of a company. We will also facilitate the business marketing of these products with our SEO experts so that they become a ready-to-use website and help sell a product from the company.
+                            { description }
                         </p>
                     </div>
 
@@ -57,17 +71,29 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                         <p className="font-bold text-dblue-dark text-xl">
                             Quantity
                         </p>
-                        <div className="bg-white h-10 flex-none border flex rounded">
-                            <button className="flex-none w-8 h-full text-lg">
+                        <div className="bg-white h-10 flex-none flex rounded">
+                            {/* Decrement Quantity */}
+                            <button className="flex-none w-8 h-full text-lg"
+                                // Deduct 1 from quantity onClick only if quantity is greater than 1
+                                onClick={() => (qty > 1) && setQty(prevState => prevState - 1)}
+                            >
                                 -
                             </button>
+
+                            {/* Field */}
                             <input 
                                 className="flex-1 h-full w-12 text-center focus-visible:outline-none"
                                 type="number" 
-                                name="" 
-                                id="" 
+                                name=""
+                                min={1}
+                                value={ qty }
                             />
-                            <button className="flex-none w-8 h-full text-lg">
+
+                            {/* Increment Quantity */}
+                            <button className="flex-none w-8 h-full text-lg"
+                                // Add 1 to quantity onClick 
+                                onClick={() => setQty(prevState => prevState + 1)}
+                            >
                                 +
                             </button>
                         </div>
@@ -82,7 +108,8 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                             Sub Total
                         </p>
                         <p className="font-bold text-dblue-dark text-xl">
-                            $10
+                            {/* Returns a Subtotal in Multiple of Product Count */}
+                            <Currency quantity={ price * qty } currency="USD" />
                         </p>
                     </div>
 
@@ -101,7 +128,9 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                         </button>
 
                         {/* Add to Cart */}
-                        <button className="flex items-center space-x-2 py-5 px-6 rounded-lg bg-dorange-light text-white">
+                        <button className="flex items-center space-x-2 py-5 px-6 rounded-lg bg-dorange-light text-white"
+                            onClick={ addItemToCart }
+                        >
                             <span>
                                 Add to Cart
                             </span>
@@ -130,10 +159,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                             {/* Decription Texts */}
                             <div className="text-dgrey-dark space-y-4">
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </p>
-                                <p>
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo.
+                                    { description }
                                 </p>
                             </div>
 
