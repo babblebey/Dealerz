@@ -1,7 +1,6 @@
 import { FC } from "react";
 import ReactStarsRating from "react-awesome-stars-rating";
-import Navbar from "../Navbar";
-import TopItems from "../TopItems";
+import TopItems from "../components/TopItems";
 
 interface ProductDetailsProps {
     
@@ -10,10 +9,6 @@ interface ProductDetailsProps {
 const ProductDetails: FC<ProductDetailsProps> = () => {
     return ( 
         <>
-            <Navbar />
-
-            <div className="h" />
-
             {/* Product Information */}
             <div className="container py-8 md:py-28">
                 {/* Image */}
