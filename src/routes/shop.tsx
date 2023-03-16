@@ -1,22 +1,19 @@
 import { FC } from "react";
-import Hero from "../Hero";
-import Navbar from "../Navbar";
-import Newsletter from "../Newsletter";
-import ProductCard from "../ProductCard";
+import Hero from "../components/Hero";
+import Newsletter from "../components/Newsletter";
+import ProductCard from "../components/ProductCard";
 
-interface ProductListProps {
+interface ShopProps {
     
 }
  
-const ProductList: FC<ProductListProps> = () => {
+const Shop: FC<ShopProps> = () => {
     return ( 
         <>
-            <Navbar />
-
             <Hero 
-                title="Home Shopping, Your Choice!" 
+                title="Home Shopping, Your Choice!"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                    <br/> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    <br/> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."    
             />
 
             {/* Content */}
@@ -41,6 +38,7 @@ const ProductList: FC<ProductListProps> = () => {
                         </div>
 
                         {/* Price */}
+                        
 
                         {/* Product Categories */}
                         <div className="font-bold text-dblue-dark space-y-6">
@@ -91,4 +89,4 @@ const ProductList: FC<ProductListProps> = () => {
     );
 }
  
-export default ProductList;
+export default Shop;
