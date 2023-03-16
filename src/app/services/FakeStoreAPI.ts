@@ -21,7 +21,7 @@ export const fakeStoreApi = createApi({
 
         // Get All Product Categories
         getCategories: builder.query({
-            query: () => createRequest(`products/categories`)
+            query: () => createRequest(`/products/categories`)
         }),
 
         // Get All Products from a Category
