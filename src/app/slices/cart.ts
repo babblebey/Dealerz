@@ -37,6 +37,13 @@ export const cartItems = (state: { cart: { items: Product[] } }) => {
     return state.cart.items
 }
 
+// Cart Item Total Price
+export const cartItemsTotalPrice = (state: { cart: { items: any[] } }) => {
+    state.cart.items.reduce((total: number, item: { price: number }) => {
+        total + item.price
+    }, 0)
+}
+
 // Cart Items Count
 export const cartItemsCount = (state: { cart: { items: Product[] } }) => {
     return state.cart.items.length
