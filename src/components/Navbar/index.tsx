@@ -12,7 +12,7 @@ const Navbar: FC<NavbarProps> = () => {
             <div className="container flex justify-between items-center py-6">
                 {/* Logo */}
                 <div>
-                    <img src={logo} alt="Dealerz" />
+                    <img src={ logo } alt="Dealerz" />
                 </div>
 
                 {/* Menu Items */}

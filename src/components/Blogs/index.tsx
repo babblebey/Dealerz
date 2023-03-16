@@ -12,7 +12,8 @@ const Blogs: FC<BlogsProps> = ({  }) => {
                     {/* Title */}
                     <h3 className="font-bold text-5xl text-dblue-dark">
                         Get Better Insights 
-                        <br className="hidden md:block" /> from Our Articles
+                        <br className="hidden md:block" /> 
+                        from Our Articles
                     </h3>
 
                     {/* Link */}
