@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import ReactStarsRating from "react-awesome-stars-rating";
 import Currency from "react-currency-formatter";
 import { useParams } from "react-router-dom";
-import { useGetProductDetailsQuery } from "../app/services/FakeStoreAPI";
+import { useGetProductDetailsQuery, useGetProductsQuery } from "../app/services/FakeStoreAPI";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../app/slices/cart";
 import { Product } from "../types";
@@ -15,6 +15,7 @@ const ProductDetails: FC = () => {
     const dispatch = useDispatch();
 
     const { data, error, isLoading, isFetching } = useGetProductDetailsQuery(productId);
+    const { data: products } = useGetProductsQuery();
     
     // While Data is Fetchinf or Loading
     if ( isLoading || isFetching ) return <Loading />;
@@ -30,7 +31,7 @@ const ProductDetails: FC = () => {
             {/* Product Information */}
             <div className="container py-8 md:py-28 md:grid md:grid-cols-2 gap-x-10">
                 {/* Image */}
-                <div className="w-full h-[552px] bg-white rounded p-4">
+                <div className="w-full h-[552px] bg-white rounded p-4 shadow-md shadow-dgrey-medium">
                     <img src={ image } alt={ title } className="w-full h-full object-contain" />
                 </div>
 
@@ -223,7 +224,9 @@ const ProductDetails: FC = () => {
                 </div>
             </div>
 
-            <TopItems />
+            { products && (
+                <TopItems items={ products } />
+            ) }
         </>
     );
 }

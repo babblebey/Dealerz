@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useGetProductsQuery } from "../app/services/FakeStoreAPI";
 import Achievements from "../components/Achievement";
 import Blogs from "../components/Blogs";
 import Collection from "../components/Collection";
@@ -13,6 +14,8 @@ interface HomeProps {
 }
  
 const Home: FC<HomeProps> = () => {
+    const { data: products, error, isLoading, isFetching } = useGetProductsQuery();
+    
     return ( 
         <>
             <Hero 
@@ -26,7 +29,9 @@ const Home: FC<HomeProps> = () => {
 
             <Collection />
 
-            <TopItems />
+            { (!isLoading && products) && (
+                <TopItems items={ products } />
+            ) }
 
             <GetInTouch />
 
