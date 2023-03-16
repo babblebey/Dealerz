@@ -9,8 +9,6 @@
 
 > A eCommerce App built with ReactJS (Typescript), Redux and TailwindCSS
 
-### ✨ [Live Preview](https://dealerz.netlify.app/)
-
 ## Install
 Run the Command to Install all dependencies.
 ```sh
