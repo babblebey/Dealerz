@@ -1,8 +1,8 @@
 import { FC } from "react";
-import CartProduct from "../CartProduct";
-import Coupon from "../Coupon";
-import Navbar from "../Navbar";
-import TopItems from "../TopItems";
+import CartProduct from "../components/CartProduct";
+import Coupon from "../components/Coupon";
+import Hero from "../components/Hero";
+import TopItems from "../components/TopItems";
 
 interface CartProps {
     
@@ -11,7 +11,11 @@ interface CartProps {
 const Cart: FC<CartProps> = ({  }) => {
     return ( 
         <>
-            <Navbar />
+            <Hero 
+                title="Our Gallery,Your Dreams!"
+                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                    <br/> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."    
+            />
 
             {/* Cart Content */}
             <div className="bg-dgrey-light py-8 md:py-28">
