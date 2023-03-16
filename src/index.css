@@ -1,7 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: DM Sans, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+.container {
+    @apply w-full px-16 max-w-[1440px] mx-auto
+}
+.badge {
+    @apply absolute flex items-center justify-center bg-dorange-light text-white h-6 w-6 rounded-full
+}
+.dots .active {
+    @apply bg-dorange-dark
+}
+.navClass {
+    @apply bg-white h-10 w-10 rounded-full flex items-center justify-center
 }
