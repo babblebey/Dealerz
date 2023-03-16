@@ -17,11 +17,11 @@ const ProductDetails: FC = () => {
     const { data, error, isLoading, isFetching } = useGetProductDetailsQuery(productId);
     const { data: products } = useGetProductsQuery();
     
-    // While Data is Fetchinf or Loading
+    // While Data is Fetching or Loading
     if ( isLoading || isFetching ) return <Loading />;
     
     const { id, title, image, description, category, price, rating } = data as Product;
-    console.log(data);
+    // console.log(data);
 
     // Add Item to Shopping Cart
     const addItemToCart = () => dispatch(addToCart( data ));
@@ -87,6 +87,7 @@ const ProductDetails: FC = () => {
                                 type="number" 
                                 name=""
                                 min={1}
+                                readOnly
                                 value={ qty }
                             />
 

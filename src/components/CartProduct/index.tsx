@@ -49,6 +49,7 @@ const CartProduct: FC<CartProductProps> = ({ data }) => {
                             type="number" 
                             name=""
                             min={1}
+                            readOnly
                             value={ qty }
                         />
 
