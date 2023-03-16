@@ -7,6 +7,7 @@ import Newsletter from "../components/Newsletter";
 import TopItems from "../components/TopItems";
 import { useSelector } from "react-redux";
 import { cartItems, cartItemsTotalPrice, cartItemsCount } from "../app/slices/cart";
+import { useGetProductsQuery } from "../app/services/FakeStoreAPI";
 
 interface CartProps {
     
@@ -17,7 +18,9 @@ const Cart: FC<CartProps> = ({  }) => {
     const itemsTotalPrice = useSelector(cartItemsTotalPrice);
     const itemsCount = useSelector(cartItemsCount);
 
-    console.log(items);
+    const { data: products, error, isLoading, isFetching } = useGetProductsQuery();
+
+    // console.log(itemsTotalPrice);
     
     return ( 
         <>
@@ -102,7 +105,7 @@ const Cart: FC<CartProps> = ({  }) => {
                                                     Total
                                                 </span>
                                                 <span className="col-span-3">
-                                                    $150
+                                                    <Currency quantity={ Number(itemsTotalPrice) } currency="USD" />
                                                 </span>
                                             </div>
                                         </div>
@@ -119,7 +122,9 @@ const Cart: FC<CartProps> = ({  }) => {
                 </div>
             </div>
 
-            <TopItems />
+            { (!isLoading && products) && (
+                <TopItems items={ products } />
+            ) }
 
             <Newsletter />
         </>
