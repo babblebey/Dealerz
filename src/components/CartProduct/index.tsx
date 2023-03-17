@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import Currency from "react-currency-formatter";
 import { Product } from "../../types";
 import { useDispatch } from "react-redux";
-import { removeFromCart } from "../../app/slices/cart";
+import { removeFromCart } from "../../app/features/cart";
 import { Link } from "react-router-dom";
 
 interface CartProductProps {

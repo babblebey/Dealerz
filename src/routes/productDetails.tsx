@@ -4,7 +4,7 @@ import Currency from "react-currency-formatter";
 import { useParams } from "react-router-dom";
 import { useGetProductDetailsQuery, useGetProductsQuery } from "../app/services/FakeStoreAPI";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../app/slices/cart";
+import { addToCart } from "../app/features/cart";
 import { Product } from "../types";
 import TopItems from "../components/TopItems";
 import Loading from "../components/Loading";

@@ -2,7 +2,7 @@ import { FC } from "react";
 import logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { cartItemsCount } from "../../app/slices/cart";
+import { cartItemsCount } from "../../app/features/cart";
 
 interface NavbarProps {
     

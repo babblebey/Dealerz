@@ -6,7 +6,7 @@ import Hero from "../components/Hero";
 import Newsletter from "../components/Newsletter";
 import TopItems from "../components/TopItems";
 import { useSelector } from "react-redux";
-import { cartItems, cartItemsTotalPrice, cartItemsCount } from "../app/slices/cart";
+import { cartItems, cartItemsTotalPrice, cartItemsCount } from "../app/features/cart";
 import { useGetProductsQuery } from "../app/services/FakeStoreAPI";
 
 interface CartProps {
