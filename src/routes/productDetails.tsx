@@ -14,11 +14,11 @@ const ProductDetails: FC = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
 
-    const { data, error, isLoading, isFetching } = useGetProductDetailsQuery(productId);
+    const { data, error, isLoading, isFetching } = useGetProductDetailsQuery(productId!);
     const { data: products } = useGetProductsQuery();
     
     // While Data is Fetching or Loading
-    if ( isLoading || isFetching ) return <Loading />;
+    if ( isLoading || isFetching ) return <Loading variant="full" />;
     
     const { id, title, image, description, category, price, rating } = data as Product;
     // console.log(data);
