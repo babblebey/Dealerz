@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useGetProductsQuery } from "../app/services/FakeStoreAPI";
+import { useGetProductsQuery, useGetCategoriesQuery } from "../app/services/FakeStoreAPI";
 import Achievements from "../components/Achievement";
 import Blogs from "../components/Blogs";
 import Collection from "../components/Collection";
@@ -15,6 +15,7 @@ interface HomeProps {
  
 const Home: FC<HomeProps> = () => {
     const { data: products, error, isLoading, isFetching } = useGetProductsQuery();
+    const { data: categories, isLoading: isLoadingCats, isFetching: isFetchingCats } = useGetCategoriesQuery()
     
     return ( 
         <>
@@ -27,7 +28,9 @@ const Home: FC<HomeProps> = () => {
                 } } 
             />
 
-            <Collection />
+            { (!isLoadingCats && categories && !isLoading && products) && (
+                <Collection categories={ categories } products={ products } />
+            ) }
 
             { (!isLoading && products) && (
                 <TopItems items={ products } />
