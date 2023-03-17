@@ -5,9 +5,10 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { Product } from "../../types";
+import Loading from "../Loading";
 
 interface TopItemsProps {
-    items: Product[]
+    items?: Product[]
 }
 
 const responsive = {
@@ -59,50 +60,58 @@ const TopItems: FC<TopItemsProps> = ({ items }) => {
                 </p>
             </div>
 
-            {/* Items Carousel */}
-            <div className="overflow-hidden">
-                <OwlCarousel dots
-                    dotClass="h-4 w-4 bg-[#E0E0E0] rounded-full"
-                    dotsClass="dots w-full flex items-center justify-center space-x-4 py-6 mt-20"
-                    stageOuterClass="py-2"
-                    nav={false}
-                    responsive={responsive} 
-                    slideBy={3}
-                >
-                    { getTopProducts(items)?.map((item, i) => (
-                        // Item
-                        <div key={i} 
-                            className="bg-white overflow-hidden border border-dgrey-light rounded-md h-[450px] flex flex-col justify-between bg-center bg-no-repeat bg-contain"
-                            style={{ backgroundImage: `url(${ item.image })` }}
+            { !items ? (
+                // Render loading component when Item isn't found
+                <Loading variant="mini" className="h-72" />
+            ) : (
+                <>
+                    {/* Items Carousel - When Items are ready */}
+                    <div className="overflow-hidden">
+                        <OwlCarousel dots
+                            dotClass="h-4 w-4 bg-[#E0E0E0] rounded-full"
+                            dotsClass="dots w-full flex items-center justify-center space-x-4 py-6 mt-20"
+                            stageOuterClass="py-2"
+                            nav={false}
+                            responsive={responsive} 
+                            slideBy={3}
                         >
-                            {/* Sale Badge */}
-                            <span className="uppercase w-fit text-white bg-dorange-light text-sm p-1 m-3 rounded">
-                                Sale
-                            </span>
-        
-                            {/* More Info */}
-                            <div className="text-center space-y-1 p-3 bg-white w-full bg-opacity-90">
-                                {/* Title */}
-                                <Link to={`/product/${ item.id }`} className="font-bold text-2xl line-clamp-2 hover:text-dorange-light">
-                                    { item.title }
-                                </Link>
-        
-                                {/* Category */}
-                                <p className="text-xs text-dgrey-dark">
-                                    { item.category }
-                                </p>
-        
-                                {/* Price */}
-                                <div className="space-x-2">
-                                    <span className="text-dorange-light">
-                                        <Currency quantity={ item.price } currency="USD" />
+                            { getTopProducts(items)?.map((item, i) => (
+                                // Item
+                                <div key={i} 
+                                    className="bg-white overflow-hidden border border-dgrey-light rounded-md h-[450px] flex flex-col justify-between bg-center bg-no-repeat bg-contain"
+                                    style={{ backgroundImage: `url(${ item.image })` }}
+                                >
+                                    {/* Sale Badge */}
+                                    <span className="uppercase w-fit text-white bg-dorange-light text-sm p-1 m-3 rounded">
+                                        Sale
                                     </span>
+                
+                                    {/* More Info */}
+                                    <div className="text-center space-y-1 p-3 bg-white w-full bg-opacity-90">
+                                        {/* Title */}
+                                        <Link to={`/product/${ item.id }`} className="font-bold text-2xl line-clamp-2 hover:text-dorange-light">
+                                            { item.title }
+                                        </Link>
+                
+                                        {/* Category */}
+                                        <p className="text-xs text-dgrey-dark">
+                                            { item.category }
+                                        </p>
+                
+                                        {/* Price */}
+                                        <div className="space-x-2">
+                                            <span className="text-dorange-light">
+                                                <Currency quantity={ item.price } currency="USD" />
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    )) }
-                </OwlCarousel>
-            </div>
+                            )) }
+                        </OwlCarousel>
+                    </div>
+                </>
+            ) }
+
         </div>
     );
 }
