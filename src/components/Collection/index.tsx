@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../../types";
+import { useFilterByCategory } from "../../app/features/filter";
 
 interface CollectionProps {
    categories: string[]
@@ -11,20 +12,6 @@ const Collection: FC<CollectionProps> = ({ categories, products }) => {
     // Initialising State with Products List
     const initState = products
     const [collProducts, setCollProducts] = useState(initState);
-
-    // Filter Handler Function
-    const filterByCategory = (category: string) => {
-        // Duplicate Products
-        const getProducts: Product[] = [...products];
-
-        // console.log(category, getProducts);
-
-        // Filter Products - Return Products where Catogories Matches
-        const filteredProducts = getProducts.filter(prod => prod.category === category);
-
-        // Set the Collection Products to Filtered Products
-        setCollProducts(filteredProducts);
-    }
 
     return ( 
         <div className="bg-dgrey-light py-8 md:py-28">
@@ -46,7 +33,11 @@ const Collection: FC<CollectionProps> = ({ categories, products }) => {
                     {/* Other Cateogies - Set Collection Products State to where categories match with that of product's */}
                     {categories.map((category, i) => (
                         <span key={i} className="capitalize cursor-pointer hover:text-dorange-light"
-                            onClick={() => filterByCategory(category)}
+                            onClick={() => useFilterByCategory(
+                                    products, category, 
+                                    (filteredProducts) => setCollProducts(filteredProducts)
+                                )
+                            }
                         >
                             { category }
                         </span>

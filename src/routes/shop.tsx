@@ -5,6 +5,7 @@ import ProductCard from "../components/ProductCard";
 import { useGetCategoriesQuery, useGetProductsQuery } from "../app/services/FakeStoreAPI";
 import Loading from "../components/Loading";
 import { Product } from "../types";
+import { useFilterByCategory, useFilterBySearch } from "../app/features/filter";
 
 interface ShopProps {
     
@@ -25,37 +26,7 @@ const Shop: FC<ShopProps> = () => {
 
     // While Data is Fetching or Loading
     if ( isLoading || isFetching ) return <Loading />;
-
-    // console.log(data);
-
-    // Filter By Category Handler Function
-    const filterByCategory = (category: string) => {
-        // Duplicate Products
-        const getProducts: Product[] = [...products];
-
-        // console.log(category, getProducts);
-
-        // Filter Products - Return Products where Catogories Matches
-        const filteredProducts = getProducts.filter(prod => prod.category === category);
-
-        // Set the Collection Products to Filtered Products
-        setShopProducts(filteredProducts);
-    }
-
-    // Filter By Search Handler Function
-    const filterBySearch = (term: string) => {
-        // Duplicate Products
-        const getProducts: Product[] = [...products];
-
-        console.log(term, getProducts);
-
-        // Filter Products - Return Products where Catogories Matches
-        const filteredProducts = getProducts.filter(prod => prod.title.toLowerCase().includes(term.toLowerCase()));
-
-        // Set the Collection Products to Filtered Products
-        setShopProducts(filteredProducts);
-    }
-
+    
     return ( 
         <>
             <Hero 
@@ -75,7 +46,11 @@ const Shop: FC<ShopProps> = () => {
                             <input type="text"
                                 className="w-full h-full bg-transparent focus-visible:outline-none"
                                 placeholder="Search products"
-                                onChange={(e) => filterBySearch(e.target.value)}
+                                onChange={(e) => useFilterBySearch(
+                                        products!, e.target.value,
+                                        (filteredProducts) => setShopProducts(filteredProducts)
+                                    )
+                                }
                             />
 
                             {/* Button */}
@@ -109,10 +84,14 @@ const Shop: FC<ShopProps> = () => {
                                     </span>
                                 </div>
 
-                                {/* Categories */}
-                                { categories?.map((category: string, i: number) => (
+                                {/* Categories - Renders When Products are Ready */}
+                                { products && categories?.map((category: string, i: number) => (
                                     <div key={i} className="flex items-center justify-between group cursor-pointer"
-                                        onClick={() => filterByCategory(category)}
+                                        onClick={() => useFilterByCategory(
+                                                products, category, 
+                                                (filteredProducts) => setShopProducts(filteredProducts)
+                                            )
+                                        }
                                     >
                                         <span className="capitalize group-hover:text-dorange-light">
                                             { category }
