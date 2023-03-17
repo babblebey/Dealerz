@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Hero from "../components/Hero";
 import Newsletter from "../components/Newsletter";
 import ProductCard from "../components/ProductCard";
 import { useGetCategoriesQuery, useGetProductsQuery } from "../app/services/FakeStoreAPI";
 import Loading from "../components/Loading";
+import { Product } from "../types";
 
 interface ShopProps {
     
@@ -13,10 +14,47 @@ const Shop: FC<ShopProps> = () => {
     const { data: products, error, isLoading, isFetching } = useGetProductsQuery();
     const { data: categories } = useGetCategoriesQuery();
 
+    // Initialising State with Products List
+    const initState = products
+    const [shopProducts, setShopProducts] = useState(initState);
+
+    // Set Products on product data change
+    useEffect(() => {
+        setShopProducts(initState);
+    }, [products])
+
     // While Data is Fetching or Loading
     if ( isLoading || isFetching ) return <Loading />;
 
     // console.log(data);
+
+    // Filter By Category Handler Function
+    const filterByCategory = (category: string) => {
+        // Duplicate Products
+        const getProducts: Product[] = [...products];
+
+        // console.log(category, getProducts);
+
+        // Filter Products - Return Products where Catogories Matches
+        const filteredProducts = getProducts.filter(prod => prod.category === category);
+
+        // Set the Collection Products to Filtered Products
+        setShopProducts(filteredProducts);
+    }
+
+    // Filter By Search Handler Function
+    const filterBySearch = (term: string) => {
+        // Duplicate Products
+        const getProducts: Product[] = [...products];
+
+        console.log(term, getProducts);
+
+        // Filter Products - Return Products where Catogories Matches
+        const filteredProducts = getProducts.filter(prod => prod.title.toLowerCase().includes(term.toLowerCase()));
+
+        // Set the Collection Products to Filtered Products
+        setShopProducts(filteredProducts);
+    }
 
     return ( 
         <>
@@ -37,6 +75,7 @@ const Shop: FC<ShopProps> = () => {
                             <input type="text"
                                 className="w-full h-full bg-transparent focus-visible:outline-none"
                                 placeholder="Search products"
+                                onChange={(e) => filterBySearch(e.target.value)}
                             />
 
                             {/* Button */}
@@ -56,12 +95,29 @@ const Shop: FC<ShopProps> = () => {
                                 Product Categories
                             </p>
                             <div className="space-y-6">
-                                { categories?.map((cat, i) => (
-                                    <div key={i} className="flex items-center justify-between">
-                                        <span className="capitalize">
-                                            { cat }
+                                {/* All Products */}
+                                <div className="flex items-center justify-between group cursor-pointer"
+                                        onClick={() => setShopProducts(initState)}
+                                    >
+                                    <span className="capitalize group-hover:text-dorange-light">
+                                        All Products
+                                    </span>
+                                    <span className="bg-transparent p-2 rounded group-hover:bg-dorange-light">
+                                        <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.861816 1.13798L5.72382 5.99998L0.861816 10.862L1.80448 11.8046L7.60915 5.99998L1.80448 0.195312L0.861816 1.13798Z" fill="black"/>
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                {/* Categories */}
+                                { categories?.map((category: string, i: number) => (
+                                    <div key={i} className="flex items-center justify-between group cursor-pointer"
+                                        onClick={() => filterByCategory(category)}
+                                    >
+                                        <span className="capitalize group-hover:text-dorange-light">
+                                            { category }
                                         </span>
-                                        <span>
+                                        <span className="bg-transparent p-2 rounded group-hover:bg-dorange-light">
                                             <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M0.861816 1.13798L5.72382 5.99998L0.861816 10.862L1.80448 11.8046L7.60915 5.99998L1.80448 0.195312L0.861816 1.13798Z" fill="black"/>
                                             </svg>
@@ -77,13 +133,25 @@ const Shop: FC<ShopProps> = () => {
 
                     {/* Products */}
                     <div className="col-span-2 space-y-10">
-                        <div className="md:grid md:grid-cols-2 md:gap-6">
-                            { !isLoading && 
-                                products?.map((item, i) => (
-                                    <ProductCard key={i} data={ item } />
-                                )
-                            ) }
-                        </div>
+                        {/* Renders Products */}
+                        { !isLoading && (
+                            <div className="md:grid md:grid-cols-2 md:gap-6">
+                                { shopProducts?.map((item: Product, i: number) => (
+                                        <ProductCard key={i} data={ item } />
+                                    )
+                                ) }
+                            </div>
+                        ) }
+
+                        {/* Renders when No product is found */}
+                        { shopProducts && (shopProducts.length < 1) && (
+                            <div className="w-full text-center">
+                                <span className="text-center">
+                                    No Product found!
+                                </span>
+                            </div>
+                        )  }
+
                         <div className="flex justify-center">
                             <button className="h-14 px-6 flex items-center font-bold rounded-lg bg-dorange-light text-white">
                                 <span>
