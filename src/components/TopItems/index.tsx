@@ -34,6 +34,15 @@ const responsive = {
 }
  
 const TopItems: FC<TopItemsProps> = ({ items }) => {
+    // Get Top Products Handler Function
+    const getTopProducts = (products: Product[]) => {
+        // Duplicate Products Array
+        const getProducts = [ ...products ]
+
+        // Return filtered product that meet the rating conditions
+        return getProducts.filter(prod => prod.rating.rate > 4);
+    }
+
     return ( 
         <div className="py-8 md:pt-28 mb:pb-14 space-y-20">
             {/* Heading */}
@@ -60,7 +69,7 @@ const TopItems: FC<TopItemsProps> = ({ items }) => {
                     responsive={responsive} 
                     slideBy={3}
                 >
-                    {items?.map((item, i) => (
+                    { getTopProducts(items)?.map((item, i) => (
                         // Item
                         <div key={i} 
                             className="bg-white overflow-hidden border border-dgrey-light rounded-md h-[450px] flex flex-col justify-between bg-center bg-no-repeat bg-contain"
@@ -91,7 +100,7 @@ const TopItems: FC<TopItemsProps> = ({ items }) => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    )) }
                 </OwlCarousel>
             </div>
         </div>
