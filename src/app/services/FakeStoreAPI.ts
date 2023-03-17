@@ -10,7 +10,7 @@ export const fakeStoreApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl }),
     endpoints: builder => ({
         // Retrieve List of all Products
-        getProducts: builder.query<Product[], undefined>({
+        getProducts: builder.query<Product[], void>({
             query: () => createRequest(`/products`)
         }),
 
@@ -20,7 +20,7 @@ export const fakeStoreApi = createApi({
         }),
 
         // Get All Product Categories
-        getCategories: builder.query({
+        getCategories: builder.query<string[], void>({
             query: () => createRequest(`/products/categories`)
         }),
 
