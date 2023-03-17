@@ -20,9 +20,7 @@ const Shop: FC<ShopProps> = () => {
     const [shopProducts, setShopProducts] = useState(initState);
 
     // Set Products on product data change
-    useEffect(() => {
-        setShopProducts(initState);
-    }, [products])
+    useEffect(() => setShopProducts(initState), [products])
 
     // While Data is Fetching or Loading
     if ( isLoading || isFetching ) return <Loading />;
