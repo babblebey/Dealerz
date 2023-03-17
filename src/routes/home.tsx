@@ -28,13 +28,9 @@ const Home: FC<HomeProps> = () => {
                 } } 
             />
 
-            { (!isLoadingCats && categories && !isLoading && products) && (
-                <Collection categories={ categories } products={ products } />
-            ) }
+            <Collection categories={ categories } products={ products } />
 
-            { (!isLoading && products) && (
-                <TopItems items={ products } />
-            ) }
+            <TopItems items={ products } />
 
             <GetInTouch />
 
