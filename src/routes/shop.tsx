@@ -22,8 +22,8 @@ const Shop: FC<ShopProps> = () => {
     // Set Products on product data change
     useEffect(() => setShopProducts(initState), [products])
 
-    // While Data is Fetching or Loading
-    if ( isLoading || isFetching ) return <Loading />;
+    // // While Data is Fetching or Loading
+    // if ( isLoading || isFetching ) return <Loading variant="full" />;
     
     return ( 
         <>
@@ -62,37 +62,19 @@ const Shop: FC<ShopProps> = () => {
                         {/* Price */}
                         
 
-                        {/* Product Categories */}
-                        <div className="font-bold text-dblue-dark space-y-6">
-                            <p className=" text-2xl">
-                                Product Categories
-                            </p>
-                            <div className="space-y-6">
-                                {/* All Products */}
-                                <div className="flex items-center justify-between group cursor-pointer"
-                                        onClick={() => setShopProducts(initState)}
-                                    >
-                                    <span className="capitalize group-hover:text-dorange-light">
-                                        All Products
-                                    </span>
-                                    <span className="bg-transparent p-2 rounded group-hover:bg-dorange-light">
-                                        <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.861816 1.13798L5.72382 5.99998L0.861816 10.862L1.80448 11.8046L7.60915 5.99998L1.80448 0.195312L0.861816 1.13798Z" fill="black"/>
-                                        </svg>
-                                    </span>
-                                </div>
-
-                                {/* Categories - Renders When Products are Ready */}
-                                { products && categories?.map((category: string, i: number) => (
-                                    <div key={i} className="flex items-center justify-between group cursor-pointer"
-                                        onClick={() => useFilterByCategory(
-                                                products, category, 
-                                                (filteredProducts) => setShopProducts(filteredProducts)
-                                            )
-                                        }
-                                    >
+                        {/* Product Categories - Renders when catergories are ready */}
+                        {categories && (
+                            <div className="font-bold text-dblue-dark space-y-6">
+                                <p className=" text-2xl">
+                                    Product Categories
+                                </p>
+                                <div className="space-y-6">
+                                    {/* All Products */}
+                                    <div className="flex items-center justify-between group cursor-pointer"
+                                            onClick={() => setShopProducts(initState)}
+                                        >
                                         <span className="capitalize group-hover:text-dorange-light">
-                                            { category }
+                                            All Products
                                         </span>
                                         <span className="bg-transparent p-2 rounded group-hover:bg-dorange-light">
                                             <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,9 +82,29 @@ const Shop: FC<ShopProps> = () => {
                                             </svg>
                                         </span>
                                     </div>
-                                )) }
+
+                                    {/* Categories - Renders When Products are Ready */}
+                                    { products && categories?.map((category: string, i: number) => (
+                                        <div key={i} className="flex items-center justify-between group cursor-pointer"
+                                            onClick={() => useFilterByCategory(
+                                                    products, category, 
+                                                    (filteredProducts) => setShopProducts(filteredProducts)
+                                                )
+                                            }
+                                        >
+                                            <span className="capitalize group-hover:text-dorange-light">
+                                                { category }
+                                            </span>
+                                            <span className="bg-transparent p-2 rounded group-hover:bg-dorange-light">
+                                                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0.861816 1.13798L5.72382 5.99998L0.861816 10.862L1.80448 11.8046L7.60915 5.99998L1.80448 0.195312L0.861816 1.13798Z" fill="black"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    )) }
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Featured Product */}
 
@@ -110,14 +112,18 @@ const Shop: FC<ShopProps> = () => {
 
                     {/* Products */}
                     <div className="col-span-2 space-y-10">
-                        {/* Renders Products */}
-                        { !isLoading && (
-                            <div className="md:grid md:grid-cols-2 md:gap-6">
-                                { shopProducts?.map((item: Product, i: number) => (
-                                        <ProductCard key={i} data={ item } />
-                                    )
-                                ) }
-                            </div>
+                        { (isLoading && !shopProducts) ? (
+                            <Loading variant="full" />
+                        ) : (
+                            <>
+                                {/* Renders Products - When shop Products are ready */}
+                                <div className="md:grid md:grid-cols-2 md:gap-6">
+                                    { shopProducts?.map((item: Product, i: number) => (
+                                            <ProductCard key={i} data={ item } />
+                                        )
+                                    ) }
+                                </div>
+                            </>
                         ) }
 
                         {/* Renders when No product is found */}
