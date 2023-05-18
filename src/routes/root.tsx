@@ -11,7 +11,7 @@ const Root: FC<RootProps> = ({  }) => {
     return ( 
         <>
             <Navbar />
-                <Outlet />
+            <Outlet />
             <Footer />
         </>
     );
